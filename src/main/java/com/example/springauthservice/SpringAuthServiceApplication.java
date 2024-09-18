@@ -1,13 +1,13 @@
-package com.dsinnovators.spring_security_basic;
+package com.example.springauthservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringSecurityBasicApplication {
+public class SpringAuthServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringSecurityBasicApplication.class, args);
+		SpringApplication.run(SpringAuthServiceApplication.class, args);
 	}
 
 }

@@ -1,10 +1,10 @@
-package com.dsinnovators.spring_security_basic;
+package com.example.springauthservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringSecurityBasicApplicationTests {
+class SpringAuthServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
