@@ -44,6 +44,71 @@ body {
     height: 60px;
 }
 
+.search-box {
+    display: flex;
+    align-items: center;
+}
+
+.search-box input[type="search"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-box button[type="button"] {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #337ab7;
+    color: #fff;
+    cursor: pointer;
+}
+
+.search-box button[type="button"]:hover {
+    background-color: #23527c;
+}
+
+.table {
+    margin-bottom: 20px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination li {
+    margin-right: 10px;
+}
+
+.pagination a {
+    color: #337ab7;
+    text-decoration: none;
+}
+
+.pagination a:hover {
+    color: #23527c;
+}
+
+.table-responsive {
+    margin-top: 20px;
+}
+
+.action-link {
+    cursor: pointer;
+    padding: 5px;
+    text-decoration: none;
+}
+
 @media (max-width: 768px) {
     .sidebar {
         width: 100%;

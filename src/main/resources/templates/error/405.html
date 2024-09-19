@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head th:with="title='Error 405 - AuthService'">
+        <th:block th:replace="~{fragments/styles :: header(title=${title})}"></th:block>
+    </head>
+    <body>
+        <div class="container">
+            <div th:with="code='405'">
+                <th:block th:replace="~{fragments/error :: errorContent(code=${code})}"></th:block>
+            </div>
+        </div>
+    </body>
+</html>

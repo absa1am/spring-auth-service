@@ -48,7 +48,7 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(authRegistry ->
                 {
-                    authRegistry.requestMatchers("/", "/register").permitAll();
+                    authRegistry.requestMatchers("/", "/register", "/public/**").permitAll();
                     authRegistry.requestMatchers("/user/**").hasRole("USER");
                     authRegistry.requestMatchers("/admin/**").hasRole("ADMIN");
                     authRegistry.anyRequest().authenticated();
