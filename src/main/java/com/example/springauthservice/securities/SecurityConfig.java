@@ -43,18 +43,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.formLogin(form ->
-            {
-                form.loginPage("/login")
-                    .permitAll();
-            })
-            .authorizeHttpRequests(auth ->
-            {
-                auth.requestMatchers("/register", "/public/images/**")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated();
-            })
-            .build();
+                {
+                    form.loginPage("/login").permitAll();
+                })
+                .authorizeHttpRequests(authRegistry ->
+                {
+                    authRegistry.requestMatchers("/", "/register").permitAll();
+                    authRegistry.requestMatchers("/user/**").hasRole("USER");
+                    authRegistry.requestMatchers("/admin/**").hasRole("ADMIN");
+                    authRegistry.anyRequest().authenticated();
+                })
+                .build();
     }
 
 }
