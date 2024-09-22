@@ -1,9 +1,14 @@
 package com.example.springauthservice.models;
 
+import com.example.springauthservice.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "users")
@@ -12,6 +17,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotBlank(message = "Name field is required.")
+    private String name;
 
     @Column(unique = true)
     @NotBlank(message = "Username field is required.")
@@ -26,12 +34,32 @@ public class User {
     @NotBlank(message = "Password field is required.")
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    private boolean isActive = false;
+    private boolean isDeleted = false;
+
+    @CreatedDate
+    private LocalDate createdDate;
+
+    @LastModifiedDate
+    private LocalDate modifiedDate;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
@@ -56,6 +84,46 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDate getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDate modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 
 }

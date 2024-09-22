@@ -31,6 +31,7 @@ body {
     color: #23527c;
     text-decoration: none;
     background-color: lightblue;
+    border-radius: 10px;
 }
 
 .content {

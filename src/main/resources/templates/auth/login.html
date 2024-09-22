@@ -15,8 +15,8 @@
                     <p class="text-secondary">Login to your account.</p>
                 </div>
 
-                <div class="text-center">
-                    <span th:if="${param.error}" class="text-danger">Invalid username or password.</span>
+                <div class="mb-3">
+                    <div th:if="${param.error}" class="alert alert-danger">Invalid username or password.</div>
                 </div>
 
                 <div class="mb-3">

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-    <head th:with="title='Admin Dashboard'">
+    <head th:with="title='Dashboard - AuthService'">
         <th:block th:replace="~{fragments/styles :: header(title=${title})}"></th:block>
     </head>
 
@@ -8,7 +8,7 @@
         <div th:replace="~{fragments/topbar :: #top-nav}"></div>
 
         <!-- Main Content -->
-        <div class="container-fluid">
+        <div class="container-fluid ps-0">
             <div class="row">
                 <div class="col-md-2">
                     <!-- Sidebar -->

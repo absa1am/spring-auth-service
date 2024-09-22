@@ -1,23 +1,30 @@
 package com.example.springauthservice.services;
 
+import com.example.springauthservice.enums.Role;
 import com.example.springauthservice.models.User;
 import com.example.springauthservice.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
@@ -30,6 +37,7 @@ public class UserService implements UserDetailsService {
                     .builder()
                     .username(existingUser.getUsername())
                     .password(existingUser.getPassword())
+                    .authorities(existingUser.getRole().name())
                     .build();
         } else {
             throw new UsernameNotFoundException(username);
@@ -37,11 +45,12 @@ public class UserService implements UserDetailsService {
     }
 
     public User saveUser(User user) {
-        return userRepository.save(user);
-    }
+        user.setRole(Role.USER);
+        user.setCreatedDate(LocalDate.now());
+        user.setModifiedDate(LocalDate.now());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-    public List<User> getUsers() {
-        return userRepository.findAll();
+        return userRepository.save(user);
     }
 
     public Page<User> getUsers(int page, int size) {
