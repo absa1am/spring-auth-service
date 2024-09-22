@@ -1,0 +1,5 @@
+<div th:fragment="errorContent(code)" class="d-flex flex-column justify-content-center align-items-center min-vh-100">
+    <p class="text-danger display-1" th:text="${code}">404</p>
+    <p class="text-secondary h5">Sorry, we can't process your request right now.</p>
+    <p class="text-secondary h6">Please, go back to <a th:href="@{/}" class="fw-bolder fst-italic">home</a> page or try again later.</p>
+</div>

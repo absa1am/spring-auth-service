@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head th:with="title='Home - AuthService'">
+        <th:block th:replace="~{fragments/styles :: header(title=${title})}"></th:block>
+    </head>
+
+    <body class="bg-light">
+        <div th:replace="~{fragments/topbar :: #top-nav}"></div>
+
+        <!-- Main Content -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Content -->
+                    <h1>Welcome to AuthService</h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </body>
+</html>
