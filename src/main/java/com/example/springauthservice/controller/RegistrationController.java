@@ -1,7 +1,7 @@
-package com.example.springauthservice.controllers;
+package com.example.springauthservice.controller;
 
-import com.example.springauthservice.models.User;
-import com.example.springauthservice.services.UserService;
+import com.example.springauthservice.model.User;
+import com.example.springauthservice.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;

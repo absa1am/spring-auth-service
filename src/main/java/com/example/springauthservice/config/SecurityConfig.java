@@ -1,8 +1,8 @@
-package com.example.springauthservice.securities;
+package com.example.springauthservice.config;
 
-import com.example.springauthservice.enums.Role;
-import com.example.springauthservice.services.AuthService;
-import com.example.springauthservice.services.UserService;
+import com.example.springauthservice.model.enums.Role;
+import com.example.springauthservice.handler.AuthHandler;
+import com.example.springauthservice.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -50,7 +50,7 @@ public class SecurityConfig {
                 {
                     form.loginPage("/login")
                             .permitAll()
-                            .successHandler(new AuthService());
+                            .successHandler(new AuthHandler());
                 })
                 .authorizeHttpRequests(authRegistry ->
                 {

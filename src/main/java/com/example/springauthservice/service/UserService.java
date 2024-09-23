@@ -1,8 +1,8 @@
-package com.example.springauthservice.services;
+package com.example.springauthservice.service;
 
-import com.example.springauthservice.enums.Role;
-import com.example.springauthservice.models.User;
-import com.example.springauthservice.repositories.UserRepository;
+import com.example.springauthservice.model.enums.Role;
+import com.example.springauthservice.model.User;
+import com.example.springauthservice.repository.UserRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

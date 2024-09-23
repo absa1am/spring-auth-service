@@ -1,6 +1,6 @@
-package com.example.springauthservice.services;
+package com.example.springauthservice.handler;
 
-import com.example.springauthservice.enums.Role;
+import com.example.springauthservice.model.enums.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -8,7 +8,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 import java.io.IOException;
 
-public class AuthService implements AuthenticationSuccessHandler {
+public class AuthHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {

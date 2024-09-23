@@ -1,6 +1,6 @@
-package com.example.springauthservice.models;
+package com.example.springauthservice.model;
 
-import com.example.springauthservice.enums.Role;
+import com.example.springauthservice.model.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
