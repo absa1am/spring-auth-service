@@ -20,6 +20,10 @@
                 </div>
 
                 <div class="mb-3">
+                    <div th:if="${message}" th:classappend="'alert alert-' + ${message.getMessageType()}" th:text="${message.getMessage()}">Invalid username or password.</div>
+                </div>
+
+                <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" name="username" placeholder="Username">
                 </div>

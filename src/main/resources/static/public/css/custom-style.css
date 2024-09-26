@@ -25,6 +25,7 @@ body {
 .sidebar a {
     color: #337ab7;
     text-decoration: none;
+    transition: background-color 0s, color 0s;
 }
 
 .sidebar a:hover {
