@@ -1,6 +1,6 @@
-package com.example.springauthservice.controllers;
+package com.example.springauthservice.controller;
 
-import com.example.springauthservice.services.UserService;
+import com.example.springauthservice.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

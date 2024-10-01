@@ -1,6 +1,7 @@
-package com.example.springauthservice.models;
+package com.example.springauthservice.model;
 
-import com.example.springauthservice.enums.Role;
+import com.example.springauthservice.model.enums.AuthType;
+import com.example.springauthservice.model.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -31,11 +32,13 @@ public class User {
     private String email;
 
     @Size(min = 6, message = "Password should contain at least 6 characters.")
-    @NotBlank(message = "Password field is required.")
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private AuthType authType;
 
     private boolean isActive = false;
     private boolean isDeleted = false;
@@ -92,6 +95,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public AuthType getAuthType() {
+        return authType;
+    }
+
+    public void setAuthType(AuthType authType) {
+        this.authType = authType;
     }
 
     public boolean isActive() {
