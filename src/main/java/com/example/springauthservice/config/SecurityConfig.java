@@ -1,57 +1,75 @@
 package com.example.springauthservice.config;
 
-import com.example.springauthservice.handler.OAuth2Handler;
-import com.example.springauthservice.model.enums.Role;
-import com.example.springauthservice.handler.AuthHandler;
+import com.example.springauthservice.handler.CustomAuthenticationSuccessHandler;
+import com.example.springauthservice.repository.UserRepository;
+import com.example.springauthservice.service.oauth2.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final AuthHandler authHandler;
-    private final OAuth2Handler oAuth2Handler;
+    private final UserRepository userRepository;
 
-    public SecurityConfig(AuthHandler authHandler, OAuth2Handler oAuth2Handler) {
-        this.authHandler = authHandler;
-        this.oAuth2Handler = oAuth2Handler;
+    public SecurityConfig(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.formLogin(form ->
-                {
-                    form.loginPage("/login")
-                            .permitAll()
-                            .successHandler(authHandler);
-                })
-                .oauth2Login(oAuth2LoginConfigurer ->
-                {
-                    oAuth2LoginConfigurer.loginPage("/login")
-                            .successHandler(oAuth2Handler);
-                })
-                .authorizeHttpRequests(authRegistry ->
-                {
-                    authRegistry.requestMatchers("/", "/register", "/public/**")
-                            .permitAll()
-                            .requestMatchers("/user/**").hasAnyAuthority("ROLE_" + Role.USER.name(), "OAUTH2_" + Role.USER.name())
-                            .requestMatchers("/admin/**").hasAnyAuthority("ROLE_" + Role.ADMIN.name())
-                            .anyRequest()
-                            .authenticated();
-                })
-                .logout(logout -> logout.logoutSuccessUrl("/login"))
-                .build();
+        http.authorizeHttpRequests(requests ->
+        {
+            requests.requestMatchers("/", "/login", "/register", "/public/**").permitAll()
+                    .requestMatchers("/admin/dashboard/**").hasRole("ADMIN")
+                    .requestMatchers("/user/dashboard/**").hasAnyRole("USER", "ADMIN")
+                    .anyRequest().authenticated();
+        });
+
+        http.formLogin(auth ->
+        {
+            auth.loginPage("/login");
+        });
+
+        http.oauth2Login(oauth ->
+        {
+            oauth.loginPage("/login")
+                    .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService()))
+                    .successHandler(successHandler());
+        });
+
+        http.logout(logout ->
+        {
+            logout.logoutUrl("/logout")
+                    .logoutSuccessUrl("/?logout")
+                    .invalidateHttpSession(true);
+        });
+
+        return http.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService() {
+        return new CustomOAuth2UserService(userRepository);
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new CustomAuthenticationSuccessHandler();
     }
 
 }

@@ -1,12 +1,16 @@
-package com.example.springauthservice.service;
+package com.example.springauthservice.service.auth;
 
 import com.example.springauthservice.model.User;
 import com.example.springauthservice.repository.UserRepository;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -34,6 +38,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         throw new UsernameNotFoundException(username);
+    }
+
+    private Collection<? extends GrantedAuthority> getAuthorities(User user) {
+        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
     }
 
 }

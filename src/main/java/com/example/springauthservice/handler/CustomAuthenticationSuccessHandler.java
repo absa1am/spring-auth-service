@@ -4,25 +4,24 @@ import com.example.springauthservice.model.enums.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component
-public class AuthHandler implements AuthenticationSuccessHandler {
+public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        String redirectURL;
+        String redirectUrl;
 
-        if (authentication.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_" + Role.ADMIN.name()))) {
-            redirectURL = "/admin";
+        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority(Role.ROLE_ADMIN.name()))) {
+            redirectUrl = "/admin/dashboard";
         } else {
-            redirectURL = "/user";
+            redirectUrl = "/user/dashboard";
         }
 
-        response.sendRedirect(redirectURL);
+        response.sendRedirect(redirectUrl);
     }
 
 }

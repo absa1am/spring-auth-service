@@ -1,6 +1,7 @@
 package com.example.springauthservice.service;
 
 import com.example.springauthservice.model.User;
+import com.example.springauthservice.model.enums.AuthType;
 import com.example.springauthservice.model.enums.Role;
 import com.example.springauthservice.repository.UserRepository;
 import org.springframework.data.domain.Page;
@@ -22,15 +23,12 @@ public class UserService {
     }
 
     public User saveUser(User user) {
-        user.setRole(Role.USER);
+        user.setRole(Role.ROLE_USER);
+        user.setAuthType(AuthType.LOCAL);
         user.setCreatedDate(LocalDate.now());
         user.setModifiedDate(LocalDate.now());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        return userRepository.save(user);
-    }
-
-    public User saveSocialUser(User user) {
         return userRepository.save(user);
     }
 
