@@ -1,1 +1,1 @@
-# spring-security-basics
+# spring-auth-service
