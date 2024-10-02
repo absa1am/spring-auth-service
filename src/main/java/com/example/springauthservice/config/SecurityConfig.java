@@ -1,6 +1,7 @@
 package com.example.springauthservice.config;
 
 import com.example.springauthservice.handler.CustomAuthenticationSuccessHandler;
+import com.example.springauthservice.model.enums.Role;
 import com.example.springauthservice.repository.UserRepository;
 import com.example.springauthservice.service.oauth2.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
@@ -30,14 +31,15 @@ public class SecurityConfig {
         http.authorizeHttpRequests(requests ->
         {
             requests.requestMatchers("/", "/login", "/register", "/public/**").permitAll()
-                    .requestMatchers("/admin/dashboard/**").hasRole("ADMIN")
-                    .requestMatchers("/user/dashboard/**").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/admin/dashboard/**").hasRole(Role.ADMIN.name())
+                    .requestMatchers("/user/dashboard/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                     .anyRequest().authenticated();
         });
 
         http.formLogin(auth ->
         {
-            auth.loginPage("/login");
+            auth.loginPage("/login")
+                    .successHandler(successHandler());
         });
 
         http.oauth2Login(oauth ->
@@ -50,7 +52,7 @@ public class SecurityConfig {
         http.logout(logout ->
         {
             logout.logoutUrl("/logout")
-                    .logoutSuccessUrl("/?logout")
+                    .logoutSuccessUrl("/login/?logout")
                     .invalidateHttpSession(true);
         });
 

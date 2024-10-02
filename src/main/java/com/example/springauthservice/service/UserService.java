@@ -23,7 +23,7 @@ public class UserService {
     }
 
     public User saveUser(User user) {
-        user.setRole(Role.ROLE_USER);
+        user.setRole(Role.USER);
         user.setAuthType(AuthType.LOCAL);
         user.setCreatedDate(LocalDate.now());
         user.setModifiedDate(LocalDate.now());

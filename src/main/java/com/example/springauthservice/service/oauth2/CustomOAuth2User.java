@@ -12,7 +12,7 @@ public class CustomOAuth2User extends DefaultOAuth2User {
     private final User user;
 
     public CustomOAuth2User(User user, Map<String, Object> attributes) {
-        super(Collections.singleton(new SimpleGrantedAuthority(user.getRole().name())), attributes, "email");
+        super(Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())), attributes, "email");
         this.user = user;
     }
 
