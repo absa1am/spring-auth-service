@@ -43,14 +43,16 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             newUser.setModifiedDate(LocalDate.now());
             newUser.setCreatedDate(LocalDate.now());
 
-            if (authorizedClientRegistrationId.equals("google")) {
-                newUser.setAuthType(AuthType.GOOGLE);
-            } else if (authorizedClientRegistrationId.equals("github")) {
-                newUser.setAuthType(AuthType.GITHUB);
-            }
-
-            return userRepository.save(newUser);
+            return newUser;
         });
+
+        if (authorizedClientRegistrationId.equals("google")) {
+            user.setAuthType(AuthType.GOOGLE);
+        } else if (authorizedClientRegistrationId.equals("github")) {
+            user.setAuthType(AuthType.GITHUB);
+        }
+
+        userRepository.save(user);
 
         return new CustomOAuth2User(user, oAuth2User.getAttributes());
     }
