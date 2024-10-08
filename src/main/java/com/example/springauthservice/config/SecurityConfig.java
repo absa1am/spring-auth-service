@@ -6,6 +6,7 @@ import com.example.springauthservice.repository.UserRepository;
 import com.example.springauthservice.service.oauth2.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,6 +29,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(Customizer.withDefaults());
+
         http.authorizeHttpRequests(requests ->
         {
             requests.requestMatchers("/", "/login", "/register", "/public/**").permitAll()
@@ -52,8 +55,10 @@ public class SecurityConfig {
         http.logout(logout ->
         {
             logout.logoutUrl("/logout")
-                    .logoutSuccessUrl("/login/?logout")
-                    .invalidateHttpSession(true);
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .clearAuthentication(true)
+                    .logoutSuccessUrl("/");
         });
 
         return http.build();
