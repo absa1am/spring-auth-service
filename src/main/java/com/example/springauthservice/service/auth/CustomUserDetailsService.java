@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     .builder()
                     .username(existingUser.getUsername())
                     .password(existingUser.getPassword())
-                    .authorities(existingUser.getRole().name())
+                    .authorities(getAuthorities(existingUser))
                     .build();
         }
 
@@ -41,7 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(User user) {
-        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
     }
 
 }

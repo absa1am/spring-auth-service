@@ -26,8 +26,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2User oAuth2User = userService.loadUser(userRequest);
         String authorizedClientRegistrationId = userRequest.getClientRegistration().getRegistrationId();
 
-        System.out.println(authorizedClientRegistrationId);
-
         String name = oAuth2User.getAttribute("name");
         String email = oAuth2User.getAttribute("email");
 
@@ -37,7 +35,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             newUser.setName(name);
             newUser.setUsername(email);
             newUser.setEmail(email);
-            newUser.setRole(Role.ROLE_USER);
+            newUser.setRole(Role.USER);
             newUser.setActive(false);
             newUser.setDeleted(false);
             newUser.setModifiedDate(LocalDate.now());
@@ -45,6 +43,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
             return newUser;
         });
+
+        user.setModifiedDate(LocalDate.now());
 
         if (authorizedClientRegistrationId.equals("google")) {
             user.setAuthType(AuthType.GOOGLE);

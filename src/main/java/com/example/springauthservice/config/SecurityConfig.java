@@ -1,10 +1,12 @@
 package com.example.springauthservice.config;
 
 import com.example.springauthservice.handler.CustomAuthenticationSuccessHandler;
+import com.example.springauthservice.model.enums.Role;
 import com.example.springauthservice.repository.UserRepository;
 import com.example.springauthservice.service.oauth2.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,17 +29,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(Customizer.withDefaults());
+
         http.authorizeHttpRequests(requests ->
         {
             requests.requestMatchers("/", "/login", "/register", "/public/**").permitAll()
-                    .requestMatchers("/admin/dashboard/**").hasRole("ADMIN")
-                    .requestMatchers("/user/dashboard/**").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/admin/dashboard/**").hasRole(Role.ADMIN.name())
+                    .requestMatchers("/user/dashboard/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                     .anyRequest().authenticated();
         });
 
         http.formLogin(auth ->
         {
-            auth.loginPage("/login");
+            auth.loginPage("/login")
+                    .successHandler(successHandler());
         });
 
         http.oauth2Login(oauth ->
@@ -50,8 +55,10 @@ public class SecurityConfig {
         http.logout(logout ->
         {
             logout.logoutUrl("/logout")
-                    .logoutSuccessUrl("/?logout")
-                    .invalidateHttpSession(true);
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .clearAuthentication(true)
+                    .logoutSuccessUrl("/");
         });
 
         return http.build();
