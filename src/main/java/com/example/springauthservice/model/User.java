@@ -40,6 +40,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AuthType authType;
 
+    private boolean enabled = false;
     private boolean isActive = false;
     private boolean isDeleted = false;
 
@@ -103,6 +104,14 @@ public class User {
 
     public void setAuthType(AuthType authType) {
         this.authType = authType;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public boolean isActive() {

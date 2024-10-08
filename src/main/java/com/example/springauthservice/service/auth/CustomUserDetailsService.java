@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findByUsernameAndEnabled(username);
 
         if (user.isPresent()) {
             User existingUser = user.get();
@@ -33,6 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     .builder()
                     .username(existingUser.getUsername())
                     .password(existingUser.getPassword())
+                    .disabled(!existingUser.isEnabled())
                     .authorities(getAuthorities(existingUser))
                     .build();
         }

@@ -42,7 +42,7 @@ public class RegistrationController {
         }
 
         try {
-            User savedUser =  userService.saveUser(user);
+            userService.saveUser(user);
         } catch (DataIntegrityViolationException exception) {
             errors.rejectValue("username", "error.username", "The username or email already exists.");
 
@@ -51,7 +51,7 @@ public class RegistrationController {
 
         redirectAttributes.addFlashAttribute("message", new Message("Registration is successful, login to continue.", MessageType.SUCCESS));
 
-        return "redirect:/login";
+        return "redirect:/email/verify-email";
     }
 
 }

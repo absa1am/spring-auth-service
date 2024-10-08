@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -29,11 +30,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(Customizer.withDefaults());
+//        http.csrf(Customizer.withDefaults());
+        http.csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(requests ->
         {
-            requests.requestMatchers("/", "/login", "/register", "/public/**").permitAll()
+            requests.requestMatchers("/", "/login", "/register", "/verify-email/{token}", "/public/**").permitAll()
                     .requestMatchers("/admin/dashboard/**").hasRole(Role.ADMIN.name())
                     .requestMatchers("/user/dashboard/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                     .anyRequest().authenticated();
