@@ -1,11 +1,13 @@
 package com.example.springauthservice.service;
 
+import com.example.springauthservice.dto.EmailDto;
 import com.example.springauthservice.model.EmailConfirmationToken;
 import com.example.springauthservice.model.User;
 import com.example.springauthservice.model.enums.AuthType;
 import com.example.springauthservice.model.enums.Role;
 import com.example.springauthservice.repository.EmailConfirmationTokenRepository;
 import com.example.springauthservice.repository.UserRepository;
+import com.example.springauthservice.service.email.EmailService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,11 +22,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailConfirmationTokenRepository emailConfirmationTokenRepository;
+    private final EmailService emailService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailConfirmationTokenRepository emailConfirmationTokenRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailConfirmationTokenRepository emailConfirmationTokenRepository, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailConfirmationTokenRepository = emailConfirmationTokenRepository;
+        this.emailService = emailService;
     }
 
     public User saveUser(User user) {
@@ -39,6 +43,8 @@ public class UserService {
         var emailConfirmationToken = new EmailConfirmationToken(UUID.randomUUID().toString(), LocalDate.now(), savedUser);
 
         emailConfirmationTokenRepository.save(emailConfirmationToken);
+
+        emailService.sendMail(new EmailDto(user.getEmail(), "Registration successful", "Welcome to AuthService. Activate your AuthService account by clicking here."));
 
         return savedUser;
     }
