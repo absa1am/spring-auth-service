@@ -1,9 +1,10 @@
 package com.example.springauthservice.service.email;
 
 import com.example.springauthservice.dto.EmailDto;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,16 +19,17 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
-    public void sendMail(EmailDto email) {
+    public void sendVerificationEmail(EmailDto email) {
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
 
-            message.setFrom(sender);
-            message.setTo(email.getRecipient());
-            message.setSubject(email.getSubject());
-            message.setText(email.getBody());
+            mimeMessageHelper.setFrom(sender);
+            mimeMessageHelper.setTo(email.getRecipient());
+            mimeMessageHelper.setSubject(email.getSubject());
+            mimeMessageHelper.setText(email.getBody(), true);
 
-            mailSender.send(message);
+            mailSender.send(mimeMessage);
         } catch (Exception e) {
             System.out.println("Error sending mail: " + e.getMessage());
         }

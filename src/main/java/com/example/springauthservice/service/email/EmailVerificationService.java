@@ -29,6 +29,7 @@ public class EmailVerificationService {
             user.setEnabled(true);
 
             userRepository.save(user);
+            emailConfirmationTokenRepository.delete(emailConfirmationToken);
 
             return true;
         }

@@ -44,7 +44,17 @@ public class UserService {
 
         emailConfirmationTokenRepository.save(emailConfirmationToken);
 
-        emailService.sendMail(new EmailDto(user.getEmail(), "Registration successful", "Welcome to AuthService. Activate your AuthService account by clicking here."));
+        EmailDto emailDto = new EmailDto();
+
+        emailDto.setRecipient(user.getEmail());
+        emailDto.setSubject("Confirm AuthService Registration");
+        emailDto.setBody("Welcome to AuthService." +
+                " Activate your AuthService account by clicking the following button: \n" +
+                "<form method=\"POST\" action=\"http://127.0.0.1:8080/verify-email/" +
+                emailConfirmationToken.getToken() + "\">" +
+                "<input type=\"submit\" value=\"Verify account\" /></form>.");
+
+        emailService.sendVerificationEmail(emailDto);
 
         return savedUser;
     }
